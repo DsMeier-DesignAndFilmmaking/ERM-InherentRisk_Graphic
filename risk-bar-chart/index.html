@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERM Risk Assessment - Damage Reduction | Purdue University</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Using system fonts since Acumin Pro is not available via Google Fonts -->
+</head>
+<body>
+  <section class="risk-assessment-section">
+    <div class="top-data-label erm-measurement-label">ERM risk assessment measurement of risk</div>
+    
+    <div class="risk-flow-container">
+      <!-- Damage before group - wraps bar only -->
+      <div class="damage-before-wrapper">
+        <div class="damage-block damage-before" id="damage-before-block">
+          <span class="block-text">Damage <strong>before</strong> risk control measure</span>
+        </div>
+      </div>
+      
+      <!-- Risk control measure -->
+      <div class="control-measure-block" id="control-measure-block">
+        <span class="block-text">Risk control measure</span>
+      </div>
+      
+      <!-- Reduction intensity arrow and label -->
+      <div class="reduction-arrow-container">
+        <div class="reduction-arrow"></div>
+        <div class="reduction-label">Reduction intensity</div>
+      </div>
+      
+      <!-- Damage after risk control measure -->
+      <div class="damage-block damage-after" id="damage-after-block">
+        <span class="block-text">Damage <strong>after</strong> risk control measure</span>
+      </div>
+    </div>
+    
+    <!-- Dotted lines for measurement levels -->
+    <div class="measurement-lines">
+      <div class="measurement-line line-before" id="line-before"></div>
+      <div class="measurement-line line-after" id="line-after"></div>
+    </div>
+    
+    <!-- Axis lines for standard bar chart appearance -->
+    <div class="axis-lines">
+      <div class="x-axis-line"></div>
+      <div class="y-axis-line"></div>
+    </div>
+    
+    <!-- Axis labels -->
+    <div class="axis-labels">
+      <div class="y-axis-label">Damage(Financial, reputational, legal)</div>
+    </div>
+    
+    <!-- Data labels below axis line -->
+    <div class="data-labels">
+      <div class="data-label inherent-risk-label">Inherent Risk</div>
+      <div class="data-label residual-risk-label">Residual Risk</div>
+    </div>
+  </section>
+
+  <script>
+    function updateLineBefore() {
+      const damageBeforeBlock = document.getElementById('damage-before-block');
+      const controlBlock = document.getElementById('control-measure-block');
+      const lineBefore = document.getElementById('line-before');
+      const riskFlowContainer = document.querySelector('.risk-flow-container');
+
+      if (!damageBeforeBlock || !controlBlock || !lineBefore || !riskFlowContainer) {
+        return;
+      }
+
+      // Get bounding rectangles relative to the risk-flow-container
+      const containerRect = riskFlowContainer.getBoundingClientRect();
+      const damageBeforeRect = damageBeforeBlock.getBoundingClientRect();
+      const controlRect = controlBlock.getBoundingClientRect();
+
+      // Calculate positions relative to risk-flow-container
+      const damageBeforeLeft = damageBeforeRect.left - containerRect.left;
+      const damageBeforeTop = damageBeforeRect.top - containerRect.top;
+      
+      const controlLeft = controlRect.left - containerRect.left;
+      const controlTop = controlRect.top - containerRect.top;
+
+      // Calculate line properties
+      const left = damageBeforeLeft;
+      const width = controlLeft - damageBeforeLeft;
+      const bottom = controlTop; // Align with the top of control-measure-block
+
+      // Update line position and width
+      lineBefore.style.left = `${left}px`;
+      lineBefore.style.width = `${width}px`;
+      lineBefore.style.bottom = `${containerRect.height - controlTop}px`;
+    }
+
+    function updateLineAfter() {
+      const controlBlock = document.getElementById('control-measure-block');
+      const damageAfterBlock = document.getElementById('damage-after-block');
+      const lineAfter = document.getElementById('line-after');
+      const riskFlowContainer = document.querySelector('.risk-flow-container');
+
+      if (!controlBlock || !damageAfterBlock || !lineAfter || !riskFlowContainer) {
+        return;
+      }
+
+      // Get bounding rectangles relative to the risk-flow-container
+      const containerRect = riskFlowContainer.getBoundingClientRect();
+      const controlRect = controlBlock.getBoundingClientRect();
+      const damageAfterRect = damageAfterBlock.getBoundingClientRect();
+
+      // Calculate positions relative to risk-flow-container
+      const controlRight = controlRect.right - containerRect.left;
+      const controlBottom = controlRect.bottom - containerRect.top;
+      
+      const damageAfterLeft = damageAfterRect.left - containerRect.left;
+      const damageAfterTop = damageAfterRect.top - containerRect.top;
+
+      // Calculate line properties
+      const left = controlRight;
+      const width = damageAfterLeft - controlRight;
+      const bottom = controlBottom; // Align with the bottom of control-measure-block
+
+      // Update line position and width
+      lineAfter.style.left = `${left}px`;
+      lineAfter.style.width = `${width}px`;
+      lineAfter.style.bottom = `${containerRect.height - controlBottom}px`;
+    }
+
+    // Initial calculation
+    function updateAllLines() {
+      updateLineBefore();
+      updateLineAfter();
+    }
+
+    window.addEventListener('load', updateAllLines);
+    
+    // Recalculate on window resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(updateAllLines, 100);
+    });
+  </script>
+</body>
+</html>

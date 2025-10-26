@@ -1,0 +1,419 @@
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: #ffffff; /* White background */
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Main container */
+.risk-assessment-section {
+  max-width: 1200px;
+  width: 100%;
+  position: relative;
+}
+
+/* ERM Risk Assessment Measurement Label */
+.measurement-label {
+  font-size: 1rem;
+  color: #ffffff;
+  text-align: left;
+  margin-bottom: 2rem;
+  font-weight: 400;
+}
+
+/* Top measurement label - positioned outside and top-left of risk-flow-container */
+.erm-measurement-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+  text-align: left;
+  padding-left: 40px; /* Match left padding of risk-flow-container */
+  margin-bottom: 0.825rem;
+  position: relative;
+  top: calc(-36px - 0.825rem); /* Move higher and account for the spacing */
+  width: 200px; /* Match width of damage-before-wrapper */
+  white-space: normal; /* Allow text wrapping */
+  line-height: 1.2; /* Tighter line spacing to reduce gap */
+}
+
+/* Damage before wrapper - wraps bar only */
+.damage-before-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 200px;
+  position: relative;
+  z-index: 4;
+  align-self: flex-start; /* Align wrapper to top level */
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Main flow container */
+.risk-flow-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  min-height: 300px; /* Increased height to accommodate longer Y-axis text */
+  padding-left: 40px; /* Space for Y-axis */
+  padding-bottom: 40px; /* Space for X-axis */
+}
+
+/* Damage blocks - both before and after */
+.damage-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  min-width: 200px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.damage-before-wrapper .damage-before {
+  background-color: #333333; /* Dark gray for damage before */
+  height: 260px; /* Stretch to touch x-axis (300px - 40px bottom padding) */
+  padding: 1.5rem; /* Match padding from .damage-block */
+  width: 100%;
+}
+
+.damage-before {
+  background-color: #333333; /* Dark gray for damage before */
+  align-self: flex-end; /* Extend to touch the x-axis line */
+  height: 240px; /* Adjusted height to match reference */
+  padding: 1.5rem; /* Match padding from .damage-block */
+}
+
+.damage-after {
+  background-color: #CCCCCC; /* Light gray for damage after */
+  color: #000000;
+  height: 100px; /* Adjusted to match reference */
+  align-self: flex-end; /* Position at bottom level */
+}
+
+/* Risk control measure block */
+.control-measure-block {
+  background-color: #666666; /* Medium gray */
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  min-width: 180px;
+  height: 160px; /* Height adjusted to align bottom with top of damage-after */
+  padding: 1.5rem;
+  text-align: center;
+  align-self: flex-start; /* Position at top level */
+}
+
+/* Block text styling */
+.block-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.block-text strong {
+  font-weight: 700;
+}
+
+/* Reduction arrow container */
+.reduction-arrow-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 120px;
+  height: 160px; /* Match height of control-measure-block */
+  align-self: flex-start;
+}
+
+/* Red arrow pointing down */
+.reduction-arrow {
+  width: 8px;
+  height: 120px; /* Increased height to leave room for text below */
+  background-color: #ff0000; /* Red arrow */
+  position: relative;
+  border-radius: 4px;
+}
+
+.reduction-arrow::before {
+  content: '';
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 16px solid #ff0000; /* Red arrowhead */
+}
+
+/* Reduction intensity label */
+.reduction-label {
+  color: #ff0000; /* Red text */
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 0;
+  text-align: center;
+  writing-mode: horizontal-tb;
+}
+
+/* Measurement lines */
+.measurement-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.measurement-line {
+  position: absolute;
+  height: 2px;
+  border-top: 2px dashed #666666;
+  border-bottom: 2px dashed #666666;
+  opacity: 0.6;
+}
+
+.line-before {
+  /* Position will be dynamically set by JavaScript */
+  bottom: 0;
+  left: 0;
+  width: 0;
+}
+
+.line-after {
+  /* Position will be dynamically set by JavaScript */
+  bottom: 0;
+  left: 0;
+  width: 0;
+}
+
+/* Axis lines for standard bar chart appearance */
+.axis-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.x-axis-line {
+  position: absolute;
+  bottom: 40px; /* Align with bottom padding */
+  left: 40px; /* Align with left padding */
+  right: 0;
+  height: 2px;
+  background-color: #000000;
+  border-bottom: 2px solid #000000;
+}
+
+.y-axis-line {
+  position: absolute;
+  bottom: 40px; /* Align with X-axis */
+  left: 40px; /* Align with left padding */
+  top: 0;
+  width: 2px;
+  background-color: #000000;
+  border-left: 2px solid #000000;
+}
+
+/* Axis labels */
+.axis-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.x-axis-label {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+.y-axis-label {
+  position: absolute;
+  left: -120px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-90deg);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+  white-space: nowrap;
+}
+
+/* Data labels below axis line */
+.data-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.data-label {
+  position: absolute;
+  bottom: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+}
+
+.inherent-risk-label {
+  left: 40px; /* Match left padding of risk-flow-container */
+  width: 200px; /* Match width of damage-before block */
+  text-align: left;
+}
+
+.residual-risk-label {
+  right: 0;
+  width: 200px; /* Match width of damage-after block */
+  text-align: left;
+}
+
+/* Top data labels above bars */
+.top-data-labels {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.top-data-label {
+  position: absolute;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #000000;
+  text-align: center;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .risk-flow-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: auto;
+  }
+  
+  .damage-block,
+  .control-measure-block {
+    min-width: 280px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .damage-before {
+    height: 140px;
+    order: 1;
+  }
+  
+  .control-measure-block {
+    height: 100px;
+    order: 2;
+  }
+  
+  .reduction-arrow-container {
+    order: 3;
+    min-width: 80px;
+  }
+  
+  .reduction-arrow {
+    height: 60px;
+  }
+  
+  .damage-after {
+    height: 100px;
+    order: 4;
+    align-self: center;
+  }
+  
+  .measurement-lines {
+    display: none; /* Hide on mobile for cleaner look */
+  }
+  
+  .axis-lines {
+    display: none; /* Hide axis lines on mobile for cleaner look */
+  }
+  
+  .axis-labels {
+    display: none; /* Hide axis labels on mobile for cleaner look */
+  }
+  
+  .data-labels {
+    display: none; /* Hide data labels on mobile for cleaner look */
+  }
+  
+  .top-data-labels {
+    display: none; /* Hide top data labels on mobile for cleaner look */
+  }
+  
+  .measurement-label {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .block-text {
+    font-size: 1rem;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .damage-block,
+  .control-measure-block {
+    min-width: 240px;
+    padding: 1rem;
+  }
+  
+  .block-text {
+    font-size: 0.9rem;
+  }
+  
+  .measurement-label {
+    font-size: 0.9rem;
+  }
+  
+  .reduction-label {
+    font-size: 0.9rem;
+  }
+}
