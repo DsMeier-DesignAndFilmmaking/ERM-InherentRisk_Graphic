@@ -39,6 +39,7 @@ body {
   color: #000000;
   text-align: left;
   padding-left: 40px; /* Match left padding of risk-flow-container */
+  margin-left: 20px; /* Add 20px to match damage-before-wrapper margin */
   margin-bottom: 0.825rem;
   position: relative;
   top: calc(-36px - 0.825rem); /* Move higher and account for the spacing */
@@ -58,6 +59,7 @@ body {
   align-self: flex-start; /* Align wrapper to top level */
   margin-top: 0;
   padding-top: 0;
+  margin-left: 20px; /* Add 20px spacing between y-axis and the damage-before block */
 }
 
 /* Main flow container */
@@ -102,6 +104,7 @@ body {
   color: #000000;
   height: 100px; /* Adjusted to match reference */
   align-self: flex-end; /* Position at bottom level */
+  margin-right: 20px; /* Add 20px spacing between the damage-after block and right edge */
 }
 
 /* Risk control measure block */
@@ -145,7 +148,7 @@ body {
 /* Red arrow pointing down */
 .reduction-arrow {
   width: 8px;
-  height: 120px; /* Increased height to leave room for text below */
+  height: 96px; /* Reduced by 24px to account for label moving up 24px */
   background-color: #ff0000; /* Red arrow */
   position: relative;
   border-radius: 4px;
@@ -173,6 +176,8 @@ body {
   margin-bottom: 0;
   text-align: center;
   writing-mode: horizontal-tb;
+  position: relative;
+  transform: translateY(-24px); /* Move up 24px to create spacing above dashed line */
 }
 
 /* Measurement lines */
@@ -292,15 +297,15 @@ body {
 }
 
 .inherent-risk-label {
-  left: 40px; /* Match left padding of risk-flow-container */
+  /* Position will be dynamically set by JavaScript */
   width: 200px; /* Match width of damage-before block */
-  text-align: left;
+  text-align: center;
 }
 
 .residual-risk-label {
-  right: 0;
+  /* Position will be dynamically set by JavaScript */
   width: 200px; /* Match width of damage-after block */
-  text-align: left;
+  text-align: center;
 }
 
 /* Top data labels above bars */

@@ -27,7 +27,7 @@
       <!-- Reduction intensity arrow and label -->
       <div class="reduction-arrow-container">
         <div class="reduction-arrow"></div>
-        <div class="reduction-label">Reduction intensity</div>
+        <div class="reduction-label" id="reduction-label">Reduction intensity</div>
       </div>
       
       <!-- Damage after risk control measure -->
@@ -55,37 +55,38 @@
     
     <!-- Data labels below axis line -->
     <div class="data-labels">
-      <div class="data-label inherent-risk-label">Inherent Risk</div>
-      <div class="data-label residual-risk-label">Residual Risk</div>
+      <div class="data-label inherent-risk-label" id="inherent-risk-label">Inherent Risk</div>
+      <div class="data-label residual-risk-label" id="residual-risk-label">Residual Risk</div>
     </div>
   </section>
 
   <script>
     function updateLineBefore() {
+      const damageBeforeWrapper = document.querySelector('.damage-before-wrapper');
       const damageBeforeBlock = document.getElementById('damage-before-block');
       const controlBlock = document.getElementById('control-measure-block');
       const lineBefore = document.getElementById('line-before');
       const riskFlowContainer = document.querySelector('.risk-flow-container');
 
-      if (!damageBeforeBlock || !controlBlock || !lineBefore || !riskFlowContainer) {
+      if (!damageBeforeWrapper || !damageBeforeBlock || !controlBlock || !lineBefore || !riskFlowContainer) {
         return;
       }
 
       // Get bounding rectangles relative to the risk-flow-container
       const containerRect = riskFlowContainer.getBoundingClientRect();
-      const damageBeforeRect = damageBeforeBlock.getBoundingClientRect();
+      const damageBeforeWrapperRect = damageBeforeWrapper.getBoundingClientRect();
       const controlRect = controlBlock.getBoundingClientRect();
 
       // Calculate positions relative to risk-flow-container
-      const damageBeforeLeft = damageBeforeRect.left - containerRect.left;
-      const damageBeforeTop = damageBeforeRect.top - containerRect.top;
+      const damageBeforeWrapperRight = damageBeforeWrapperRect.right - containerRect.left;
+      const damageBeforeWrapperTop = damageBeforeWrapperRect.top - containerRect.top;
       
       const controlLeft = controlRect.left - containerRect.left;
       const controlTop = controlRect.top - containerRect.top;
 
-      // Calculate line properties
-      const left = damageBeforeLeft;
-      const width = controlLeft - damageBeforeLeft;
+      // Calculate line properties - start from top-right corner of damage-before-wrapper
+      const left = damageBeforeWrapperRight;
+      const width = controlLeft - damageBeforeWrapperRight;
       const bottom = controlTop; // Align with the top of control-measure-block
 
       // Update line position and width
@@ -133,13 +134,54 @@
       updateLineAfter();
     }
 
-    window.addEventListener('load', updateAllLines);
+    /**
+     * Dynamically center labels beneath their corresponding bar elements
+     */
+    function alignLabels() {
+      const inherentBar = document.querySelector('.damage-before-wrapper');
+      const residualBar = document.querySelector('.damage-block.damage-after');
+      const inherentLabel = document.getElementById('inherent-risk-label');
+      const residualLabel = document.getElementById('residual-risk-label');
+      
+      // Get the chart container for positioning context
+      const chartContainer = document.querySelector('.risk-flow-container');
+
+      // Array of [bar element, label element] pairs
+      const pairs = [
+        [inherentBar, inherentLabel],
+        [residualBar, residualLabel]
+      ];
+
+      pairs.forEach(([bar, label]) => {
+        if (bar && label && chartContainer) {
+          const barRect = bar.getBoundingClientRect();
+          const chartRect = chartContainer.getBoundingClientRect();
+          
+          // Calculate the center point of the bar relative to the chart container
+          const barCenter = barRect.left + barRect.width / 2 - chartRect.left;
+          
+          // Position the label so its center aligns with the bar's center
+          label.style.position = 'absolute';
+          label.style.left = `${barCenter}px`;
+          label.style.transform = 'translateX(-50%)';
+        }
+      });
+    }
+
+    // Combine all update functions
+    function updateAll() {
+      updateAllLines();
+      alignLabels();
+    }
+
+    // Initial setup
+    window.addEventListener('load', updateAll);
     
     // Recalculate on window resize
     let resizeTimeout;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updateAllLines, 100);
+      resizeTimeout = setTimeout(updateAll, 100);
     });
   </script>
 </body>
